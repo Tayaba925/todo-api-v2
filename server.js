@@ -34,6 +34,23 @@ app.get('/tasks/:id', (req, res) => {
   res.json(task);
 });
 
+app.post('/tasks', (req, res) => {
+  const { title } = req.body;
+
+  if (!title || title.trim() === "") {
+    return res.status(400).json({ error: "Title is required" });
+  }
+
+  const newTask = {
+    id: tasks.length ? tasks[tasks.length - 1].id + 1 : 1,
+    title,
+    done: false
+  };
+
+  tasks.push(newTask);
+  res.status(201).json(newTask);
+});
+
 const PORT = 3000;
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
